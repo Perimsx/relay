@@ -21,6 +21,7 @@ body,
 #root {
   height: 100%;
   overflow: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 body {
@@ -28,6 +29,8 @@ body {
   background: var(--bg);
   color: var(--fg);
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
 }
 
 a {
@@ -80,24 +83,31 @@ a {
 }
 
 /* ── Stars ─────────────────────────────────── */
-.star {
+.stars-layer {
   position: fixed;
-  border-radius: 50%;
+  inset: 0;
+  z-index: 1;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
   will-change: opacity;
 }
 
 .star-far {
-  z-index: 1;
   filter: blur(0.3px);
 }
 
-.star-mid {
-  z-index: 2;
-}
-
-.star-near {
-  z-index: 3;
+@keyframes twinkle {
+  0%, 100% {
+    opacity: var(--ta, 0.5);
+  }
+  50% {
+    opacity: var(--tb, 0.08);
+  }
 }
 
 /* ── Progress Arc ───────────────────────────── */
@@ -287,17 +297,20 @@ a {
   background: radial-gradient(ellipse, rgba(232,200,120,0.12) 0%, transparent 70%);
 }
 
-.card-a:hover {
+.card-a:hover,
+.card-a:active {
   background: rgba(232,200,120,0.065);
   border-color: rgba(232,200,120,0.4);
   box-shadow: 0 0 0 1px rgba(232,200,120,0.06), 0 8px 30px rgba(0,0,0,0.35), 0 0 35px rgba(232,200,120,0.07);
 }
 
-.card-a:hover::before {
+.card-a:hover::before,
+.card-a:active::before {
   opacity: 1;
 }
 
-.card-a:hover::after {
+.card-a:hover::after,
+.card-a:active::after {
   opacity: 1;
 }
 
@@ -309,17 +322,20 @@ a {
   background: radial-gradient(ellipse, rgba(232,200,120,0.06) 0%, transparent 70%);
 }
 
-.card-b:hover {
+.card-b:hover,
+.card-b:active {
   background: rgba(232,200,120,0.035);
   border-color: rgba(232,200,120,0.2);
   box-shadow: 0 0 0 1px rgba(232,200,120,0.04), 0 8px 30px rgba(0,0,0,0.35), 0 0 25px rgba(232,200,120,0.04);
 }
 
-.card-b:hover::before {
+.card-b:hover::before,
+.card-b:active::before {
   opacity: 0.5;
 }
 
-.card-b:hover::after {
+.card-b:hover::after,
+.card-b:active::after {
   opacity: 1;
 }
 
@@ -504,19 +520,24 @@ a {
 @media (max-width: 640px) {
   .title {
     font-size: 2.6rem;
+    letter-spacing: -0.06em;
   }
 
   .counter {
-    padding: 12px 18px;
+    padding: 10px 14px;
     gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 6px;
   }
 
   .cn-n {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .cn-s {
-    margin: 0 10px;
+    margin: 0 8px;
+    height: 14px;
   }
 
   .links-row {
@@ -524,11 +545,70 @@ a {
   }
 
   .card {
-    width: 210px;
+    width: 220px;
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .ci {
+    width: 28px;
+    height: 28px;
   }
 
   .arc {
     display: none;
+  }
+
+  .kicker {
+    font-size: 8px;
+    letter-spacing: 0.4em;
+  }
+
+  .links-hint {
+    font-size: 8px;
+  }
+
+  .footer {
+    bottom: 16px;
+    flex-direction: column;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  .fd {
+    display: none;
+  }
+
+  .fl {
+    font-size: 8px;
+  }
+
+  .content {
+    gap: 14px;
+    padding: 0 16px;
+  }
+
+  .clock {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 380px) {
+  .title {
+    font-size: 2.1rem;
+  }
+
+  .card {
+    width: 190px;
+    min-width: 0;
+  }
+
+  .cb strong {
+    font-size: 11px;
+  }
+
+  .cb em {
+    font-size: 9px;
   }
 }
 
